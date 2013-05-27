@@ -1,7 +1,7 @@
 require 'hiera_puppet'
 
 module Puppet::Parser::Functions
-  newfunction(:hiera, :type => :rvalue, :arity => -2, :doc => "Performs a
+  newfunction(:hiera, :type => :rvalue, :arity => -2, :munge_undef => :nil, :doc => "Performs a
   standard priority lookup and returns the most specific value for a given key.
   The returned value can be data of any type (strings, arrays, or hashes). 
 

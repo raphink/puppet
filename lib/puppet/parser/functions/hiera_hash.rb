@@ -1,7 +1,7 @@
 require 'hiera_puppet'
 
 module Puppet::Parser::Functions
-  newfunction(:hiera_hash, :type => :rvalue, :arity => -2, :doc => 
+  newfunction(:hiera_hash, :type => :rvalue, :arity => -2, :munge_undef => :nil, :doc => 
   "Returns a merged hash of matches from throughout the hierarchy. In cases where two or 
   more hashes share keys, the hierarchy  order determines which key/value pair will be 
   used in the returned hash, with the pair in the highest priority data source winning.

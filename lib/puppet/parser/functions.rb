@@ -115,6 +115,10 @@ module Puppet::Parser::Functions
   #   zero or more arguments.  A function with an arity of 2 must be provided
   #   with exactly two arguments, no more and no less.  Added in Puppet 3.1.0.
   #
+  # @option options [Symbol] :munge_undef which value to munge `undef` into
+  #   when it is passed as an argument to a function. Possible values are `:empty`
+  #   (default, returns `''`) and `:nil` (returns `nil`).
+  #
   # @return [Hash] describing the function.
   #
   # @api public
@@ -125,6 +129,7 @@ module Puppet::Parser::Functions
 
     arity = options[:arity] || -1
     ftype = options[:type] || :statement
+    munge_undef = options[:munge_undef] || :empty 
 
     unless ftype == :statement or ftype == :rvalue
       raise Puppet::DevError, "Invalid statement type #{ftype.inspect}"
@@ -151,7 +156,7 @@ module Puppet::Parser::Functions
       end
     end
 
-    func = {:arity => arity, :type => ftype, :name => fname}
+    func = {:arity => arity, :type => ftype, :name => fname, :munge_undef => munge_undef}
     func[:doc] = options[:doc] if options[:doc]
 
     add_function(name, func)
@@ -223,6 +228,28 @@ module Puppet::Parser::Functions
   def self.arity(name)
     func = get_function(name)
     func ? func[:arity] : -1
+  end
+
+  # Return the default munging value for :undef
+  #
+  # @param [Symbol] name the function
+  # @return [String, nil] The value to be assigned for :undef
+  #
+  # @api public
+  def self.munged_undef(name)
+    func = get_function(name)
+    if func
+      case func[:munge_undef]
+      when :empty
+        ''
+      when :nil
+        nil
+      else
+        ''
+      end
+    else
+      ''
+    end
   end
 
   class << self

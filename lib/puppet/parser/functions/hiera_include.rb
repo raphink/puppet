@@ -1,7 +1,7 @@
 require 'hiera_puppet'
 
 module Puppet::Parser::Functions
-  newfunction(:hiera_include, :arity => -2, :doc => "Assigns classes to a node
+  newfunction(:hiera_include, :arity => -2, :munge_undef => :nil, :doc => "Assigns classes to a node
   using an array merge lookup that retrieves the value for a user-specified key
   from a Hiera data source.
 
