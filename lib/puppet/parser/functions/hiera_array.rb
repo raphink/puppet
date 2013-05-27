@@ -1,7 +1,7 @@
 require 'hiera_puppet'
 
 module Puppet::Parser::Functions
-  newfunction(:hiera_array, :type => :rvalue, :arity => -2,:doc => "Returns all 
+  newfunction(:hiera_array, :type => :rvalue, :arity => -2, :munge_undef => :nil, :doc => "Returns all 
   matches throughout the hierarchy --- not just the first match --- as a flattened array of unique values.
   If any of the matched values are arrays, they're flattened and included in the results.
   

@@ -34,7 +34,8 @@ class Puppet::Parser::AST
       end
 
       # We don't need to evaluate the name, because it's plaintext
-      args = @arguments.safeevaluate(scope).map { |x| x == :undef ? '' : x }
+      munged_undef = Puppet::Parser::Functions.munged_undef(@name)
+      args = @arguments.safeevaluate(scope).map { |x| x == :undef ? munged_undef : x }
 
       # append a puppet lambda (unevaluated) if it is defined
       args << pblock if pblock
