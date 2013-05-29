@@ -21,6 +21,9 @@ module Puppet::Parser::Functions
   <http://docs.puppetlabs.com/hiera/1/puppet.html#hiera-lookup-functions>
   ") do |*args|
     key, default, override = HieraPuppet.parse_args(args)
+    if args.size >= 2 and default.nil?
+      default = :undef
+    end
     HieraPuppet.lookup(key, default, self, override, :array)
   end
 end
