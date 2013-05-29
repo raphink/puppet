@@ -33,7 +33,11 @@ module Puppet::Parser::Functions
   <http://docs.puppetlabs.com/hiera/1/puppet.html#hiera-lookup-functions>
   ") do |*args|
     key, default, override = HieraPuppet.parse_args(args)
-    if answer = HieraPuppet.lookup(key, default, self, override, :array)
+    if args.size >= 2 and default.nil?
+      default = :undef
+    end
+    answer = HieraPuppet.lookup(key, default, self, override, :array)
+    if answer and answer != :undef
       method = Puppet::Parser::Functions.function(:include)
       send(method, answer)
     else
